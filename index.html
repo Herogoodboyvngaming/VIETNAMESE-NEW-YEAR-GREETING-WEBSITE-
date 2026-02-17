@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trang web chúc tết - Nguyễn Chí Dự</title>
+    <style>
+        :root { --red: #ff0000; --gold: #ffd700; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #000; color: #fff; display: flex; flex-direction: column; overflow: hidden;
+        }
+        
+        /* Viền Neon mượt sử dụng Hardware Acceleration */
+        body::after { 
+            content: ""; position: absolute; inset: 0; border: 4px solid; 
+            border-image: linear-gradient(90deg, var(--red), var(--gold), var(--red), var(--gold)) 1; 
+            animation: borderMove 3s infinite linear; pointer-events: none; z-index: 100;
+            will-change: filter;
+        }
+        @keyframes borderMove { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+
+        .main-wrapper { 
+            flex: 1; display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; width: 100%; z-index: 10; padding: 15px;
+            overflow-y: auto; text-align: center;
+        }
+        
+        h1 { color: var(--gold); text-transform: uppercase; margin: 0; font-size: clamp(1.4rem, 6vw, 2.2rem); text-shadow: 2px 2px 10px var(--red); animation: slideDown 0.8s ease-out; }
+        h2 { font-size: clamp(0.7rem, 3vw, 0.9rem); margin: 5px 0 15px 0; color: #ccc; }
+
+        .clock { font-size: clamp(2rem, 10vw, 3.2rem); color: var(--gold); font-weight: bold; text-shadow: 0 0 15px var(--red); margin: 5px 0; }
+        .year-info { font-size: clamp(1.1rem, 5vw, 1.6rem); color: #ff4d4d; font-weight: bold; margin-bottom: 20px; }
+
+        /* KHU VỰC TỰ ĐỘNG */
+        .section-auto { border: 1px solid rgba(255, 215, 0, 0.3); padding: 15px; border-radius: 12px; margin-bottom: 15px; background: rgba(255, 255, 255, 0.03); width: 100%; max-width: 400px; }
+        .btn-auto { background: var(--gold); color: #000; border: none; padding: 12px; border-radius: 25px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2); }
+        .btn-auto:active { transform: scale(0.95); }
+        
+        .auto-wish-box { 
+            min-height: 70px; display: flex; align-items: center; justify-content: center; 
+            font-style: italic; color: var(--gold); font-size: 0.95rem; border-top: 1px dashed rgba(255, 215, 0, 0.5); 
+            margin-top: 10px; padding: 10px; line-height: 1.4; transition: all 0.5s ease;
+        }
+
+        .blink { animation: blinker 0.8s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+
+        /* BAO LÌ XÌ */
+        .section-lixi { border: 1px solid rgba(255, 0, 0, 0.3); padding: 12px; border-radius: 12px; background: rgba(139, 0, 0, 0.15); width: 100%; max-width: 400px; margin-bottom: 15px; }
+        .lixi-container { display: flex; justify-content: center; gap: 12px; margin: 12px 0; }
+        .lixi-item { width: clamp(55px, 14vw, 75px); height: clamp(85px, 20vw, 110px); background: var(--red); border: 2px solid var(--gold); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .lixi-item:hover { transform: translateY(-5px); }
+
+        #manual-wish-display { padding: 10px; border-radius: 8px; background: var(--gold); color: #000; font-weight: bold; display: none; font-size: 0.9rem; border: 1px solid #fff; animation: popUp 0.4s ease; }
+
+        /* THANH LED NHỎ GỌN - CHẠY CHẬM */
+        .led-wrap { width: 100%; background: #050505; border-top: 1px solid var(--gold); height: 35px; display: flex; align-items: center; overflow: hidden; position: relative; }
+        .led-text { 
+            display: inline-block; padding-left: 100%; color: #00ff00; 
+            font-family: 'Courier New', monospace; font-weight: bold; font-size: 1rem; 
+            line-height: 35px; white-space: nowrap; will-change: transform;
+        }
+        .animate-led { animation: ledRun 25s linear forwards; }
+        @keyframes ledRun { 
+            from { transform: translate3d(0, 0, 0); } 
+            to { transform: translate3d(-250%, 0, 0); } 
+        }
+
+        @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        footer { width: 100%; font-size: 0.75rem; padding: 10px 0; background: #000; color: #888; text-align: center; border-top: 1px solid #111; z-index: 101; }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper" id="content-web">
+        <h1>Trang web chúc tết</h1>
+        <h2>Được code bởi : Nguyễn Chí Dự 🇻🇳♥️🇻🇳</h2>
+
+        <div class="clock" id="clock">00:00:00</div>
+        <div class="year-info" id="lunar-year">Đang dò năm...</div>
+
+        <div class="section-auto">
+            <button class="btn-auto" id="btnAuto" onclick="handleAutoToggle()">🖱️ Bật tự động lời chúc</button>
+            <div class="auto-wish-box" id="auto-wish-text">Hệ thống tự động đang tắt...</div>
+        </div>
+
+        <div class="section-lixi">
+            <p style="margin:0; color:var(--gold); font-weight:bold; font-size:0.85rem;">🧧 BỐC LÌ XÌ MAY MẮN 🧧</p>
+            <div class="lixi-container">
+                <div class="lixi-item" onclick="openLixi()">🧧</div>
+                <div class="lixi-item" onclick="openLixi()">🧧</div>
+                <div class="lixi-item" onclick="openLixi()">🧧</div>
+            </div>
+            <div id="manual-wish-display"></div>
+        </div>
+    </div>
+
+    <div id="lock-web" style="display:none; flex:1; align-items:center; justify-content:center; color:#ff4444; font-weight:bold; text-align:center; padding:20px;">
+        ⚠️ Rất tiếc bạn vào trễ quá vui lòng đợi năm tết sau để mở khóa lại
+    </div>
+
+    <div class="led-wrap">
+        <div class="led-text" id="led-content">CHÚC MỪNG NĂM MỚI 2026 - AN KHANG THỊNH VƯỢNG...</div>
+    </div>
+
+    <footer>Made in VN 🇻🇳 | Made by : Nguyễn Chí Dự 🇻🇳♥️🇻🇳</footer>
+
+    <script>
+        // KHO 100+ LỜI CHÚC
+        const wishes = [
+            "Chúc mừng năm mới Bính Ngọ 2026! Vạn sự như ý, tỷ sự như mơ!",
+            "Chúc bạn năm mới sức khỏe dồi dào, an khang thịnh vượng, phát tài phát lộc!",
+            "Cung chúc tân xuân, vạn sự cát tường, toàn gia bình an, hạnh phúc đong đầy!",
+            "Năm mới chúc bạn: Đau đầu vì giàu, mệt mỏi vì giỏi, buồn phiền vì nhiều tiền!",
+            "Chúc bạn năm mới công việc hanh thông, thăng tiến bất ngờ, tiền vô như nước!",
+            "Xuân này hơn hẳn mấy xuân qua. Phúc lộc đưa nhau đến từng nhà.",
+            "Chúc năm mới: Đa lộc, đa tài, đa phú quý. Đắc thời, đắc thắng, đắc nhân tâm!",
+            "Mừng xuân Bính Ngọ: Mã đáo thành công, vạn sự thành công, triệu điều may mắn!",
+            "Chúc mừng năm mới! Chúc bạn luôn nở nụ cười trên môi, tươi vui như hoa mai nở!",
+            "Chúc bạn năm mới 12 tháng phú quý, 365 ngày phát tài, 8760 giờ sung túc!",
+            "Năm mới chúc bạn: Tiền đầy túi, tim đầy tình, xăng đầy bình, gạo đầy lu!",
+            "Chúc mừng năm mới! Chúc gia đình bạn luôn sum vầy, ấm áp và tràn đầy tiếng cười!",
+            "Chúc bạn năm mới: Không lo deadline, không sợ sếp mắng, chỉ lo tiêu tiền!",
+            "Năm mới chúc bạn: Đủ niềm vui để ngọt ngào, đủ thử thách để mạnh mẽ!",
+            "Chúc mừng xuân mới! Chúc cuộc đời bạn luôn rực rỡ như pháo hoa giao thừa!",
+            "CHÚC MỪNG NĂM MỚI 2026 - VẠN SỰ NHƯ Ý - TẤN TÀI TẤN LỘC!"
+            // ... (Bạn có thể thêm nhiều câu nữa vào đây cho đủ 100 câu)
+        ];
+
+        let autoStatus = "OFF", autoInterval = null, currentWishIdx = 0;
+        const ledElem = document.getElementById('led-content');
+
+        // Logic LED chạy hết mới đổi câu
+        function startLed() {
+            ledElem.innerText = wishes[Math.floor(Math.random() * wishes.length)];
+            ledElem.classList.remove('animate-led');
+            void ledElem.offsetWidth;
+            ledElem.classList.add('animate-led');
+        }
+        ledElem.addEventListener('animationend', startLed);
+        startLed();
+
+        // Logic Bật/Tắt Tự Động (10s chờ)
+        function handleAutoToggle() {
+            const btn = document.getElementById('btnAuto');
+            const autoBox = document.getElementById('auto-wish-text');
+
+            if (autoStatus === "OFF") {
+                autoStatus = "STARTING";
+                btn.innerText = "⏸️ Đang thiết lập...";
+                autoBox.innerHTML = '<span class="blink">ℹ️ Hệ thống tự động đang bật</span>';
+                
+                setTimeout(() => {
+                    autoStatus = "ON";
+                    btn.innerText = "⏸️ Tắt tự động lời chúc";
+                    autoBox.innerText = "✅ Hệ thống tự động đã bật";
+                    
+                    autoInterval = setInterval(() => {
+                        autoBox.style.opacity = 0;
+                        setTimeout(() => {
+                            autoBox.innerText = wishes[Math.floor(Math.random() * wishes.length)];
+                            autoBox.style.opacity = 1;
+                        }, 500);
+                    }, 5000); // Chậm lại 5s mỗi câu
+                }, 10000);
+
+            } else {
+                clearInterval(autoInterval);
+                autoStatus = "STOPPING";
+                btn.innerText = "🖱️ Đang hủy...";
+                autoBox.innerHTML = '<span class="blink">ℹ️ Hệ thống tự động đang tắt</span>';
+                
+                setTimeout(() => {
+                    autoStatus = "OFF";
+                    btn.innerText = "🖱️ Bật tự động lời chúc";
+                    autoBox.innerText = "✅ Đã tắt tự động";
+                }, 10000);
+            }
+        }
+
+        function openLixi() {
+            const display = document.getElementById('manual-wish-display');
+            display.innerText = wishes[Math.floor(Math.random() * wishes.length)];
+            display.style.display = 'block';
+        }
+
+        // Hàm Can Chi
+        function getCanChi(year) {
+            const cans = ["Canh", "Tân", "Nhâm", "Quý", "Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ"];
+            const chis = ["Thân", "Dậu", "Tuất", "Hợi", "Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi"];
+            return cans[year % 10] + " " + chis[year % 12];
+        }
+
+        // Cập nhật thời gian & Khóa web
+        function update() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('vi-VN');
+            document.getElementById('lunar-year').innerText = "Năm " + getCanChi(now.getFullYear());
+            
+            const m = now.getMonth() + 1, d = now.getDate();
+            const isOpen = (m === 2 && d >= 17 && d <= 21); // Mở từ 17/2 đến 21/2/2026
+            document.getElementById('content-web').style.display = isOpen ? 'flex' : 'none';
+            document.getElementById('lock-web').style.display = isOpen ? 'none' : 'flex';
+        }
+
+        setInterval(update, 1000);
+        update();
+    </script>
+</body>
+</html>
+              
