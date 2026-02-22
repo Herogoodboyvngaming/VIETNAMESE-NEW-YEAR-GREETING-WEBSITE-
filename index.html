@@ -32,32 +32,24 @@
         h1 { color: var(--gold); text-transform: uppercase; margin: 0; font-size: clamp(1.6rem, 7vw, 2.5rem); text-shadow: 2px 2px 15px var(--red); }
         h2 { font-size: clamp(0.8rem, 3.5vw, 1rem); margin: 8px 0 20px 0; color: #ffd700; opacity: 0.9; }
 
-        .clock { font-size: clamp(2.5rem, 12vw, 3.8rem); color: var(--gold); font-weight: bold; text-shadow: 0 0 20px var(--red); margin: 10px 0; font-family: 'Courier New', Courier, monospace; }
+        .clock { font-size: clamp(2.5rem, 12vw, 3.5rem); color: var(--gold); font-weight: bold; text-shadow: 0 0 20px var(--red); margin: 10px 0; font-family: 'Courier New', monospace; }
         .blink { animation: blinker 1s linear infinite; }
         @keyframes blinker { 50% { opacity: 0; } }
 
-        /* KHUNG CHÚC TỰ ĐỘNG */
-        .section-auto { 
-            border: 2px solid var(--gold); padding: 20px; border-radius: 20px; 
-            background: rgba(139, 0, 0, 0.4); width: 100%; max-width: 450px; 
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.3); backdrop-filter: blur(5px);
-            margin-bottom: 20px;
+        /* BỘ COUNTDOWN MỚI CÓ KHUNG */
+        .countdown-container { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        .time-box { 
+            background: rgba(139, 0, 0, 0.6); 
+            border: 2px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 10px; 
+            min-width: 70px; 
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
-        .btn-auto { 
-            background: linear-gradient(to bottom, #ffd700, #ffae00); color: #8b0000; 
-            border: none; padding: 14px; border-radius: 30px; font-weight: bold; 
-            cursor: pointer; width: 100%; transition: 0.2s; font-size: 1rem;
-            box-shadow: 0 5px 0 #b38600;
-        }
-        .btn-auto:active { transform: translateY(3px); box-shadow: 0 2px 0 #b38600; }
-        
-        .auto-wish-box { 
-            min-height: 80px; display: flex; align-items: center; justify-content: center; 
-            font-style: italic; color: #fff; font-size: 1.1rem; 
-            margin-top: 15px; padding: 10px; text-shadow: 1px 1px 2px #000;
-        }
+        .time-num { font-size: 1.8rem; font-weight: bold; color: var(--gold); display: block; }
+        .time-label { font-size: 0.7rem; color: #fff; text-transform: uppercase; margin-top: 4px; display: block; }
 
-        /* LED CHẠY NGANG - TỐC ĐỘ CHẬM (60s) */
+        /* LED CHẠY NGANG */
         .led-wrap { width: 100%; background: #000; border-top: 2px solid var(--gold); border-bottom: 1px solid var(--gold); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .led-text { 
             display: inline-block; padding-left: 100%; color: #00ff00; 
@@ -66,18 +58,14 @@
         }
         @keyframes ledRun { from { transform: translateX(0); } to { transform: translateX(-400%); } }
 
-        /* MÀN HÌNH KHÓA */
         #lock-web { display:none; flex:1; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:30px; }
-        .countdown { font-size: clamp(1.8rem, 10vw, 3rem); color: var(--gold); font-weight: bold; margin-top: 20px; text-shadow: 0 0 15px red; }
-
-        /* EMOJI CHẠM */
-        .emoji { position: absolute; pointer-events: none; animation: flyUp 1.5s forwards; z-index: 10000; font-size: 1.8rem; }
-        @keyframes flyUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-150px) scale(0); opacity: 0; } }
 
         footer { 
             width: 100%; font-size: 0.75rem; padding: 15px 5px; background: rgba(0,0,0,0.8); 
             color: #bbb; text-align: center; border-top: 1px solid #333; z-index: 101; line-height: 1.6;
         }
+        .emoji { position: absolute; pointer-events: none; animation: flyUp 1.5s forwards; z-index: 10000; font-size: 1.8rem; }
+        @keyframes flyUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-150px) scale(0); opacity: 0; } }
     </style>
 </head>
 <body onclick="createEmoji(event)">
@@ -85,24 +73,36 @@
     <div class="main-wrapper" id="content-web">
         <h1>Trang web chúc tết</h1>
         <h2>Được code bởi : Nguyễn Chí Dự 🇻🇳♥️🇻🇳</h2>
-        
         <div class="clock" id="clock">00:00:00</div>
-        
         <div id="mung-box" style="font-weight:bold; margin-bottom:20px; font-size: 1.2rem;">
-            Năm Bính Ngọ | <span id="mung-status" class="blink">Đang dò mùng...</span>
-        </div>
-
-        <div class="section-auto">
-            <button class="btn-auto" id="btnAuto" onclick="toggleAuto()">🖱️ Bật tự động lời chúc</button>
-            <div class="auto-wish-box" id="auto-wish-text">Chào mừng bạn! Nhấn nút để nhận lời chúc 999+ từ Dự 🧧</div>
+            Năm Đinh Mùi | <span id="mung-status" class="blink">Tết Sắp Đến</span>
         </div>
     </div>
 
     <div id="lock-web">
         <h1 class="blink" style="color:red; font-size: 2rem;">⚠️ WEBSITE ĐANG KHÓA</h1>
         <p style="color:var(--gold); font-size: 1.1rem; max-width: 80%;">Rất tiếc bạn vào trễ quá vui lòng đợi năm tết sau để mở khóa lại</p>
-        <div style="margin-top:30px; font-size: 0.9rem; color: #ccc;">ĐẾN TẾT NĂM SAU CÒN:</div>
-        <div class="countdown" id="timer">00d 00h 00m 00s</div>
+        
+        <div style="margin-top:20px; font-size: 0.9rem; color: #ccc;">ĐẾN TẾT NĂM SAU CÒN:</div>
+        
+        <div class="countdown-container">
+            <div class="time-box">
+                <span class="time-num" id="d">00</span>
+                <span class="time-label">ngày</span>
+            </div>
+            <div class="time-box">
+                <span class="time-num" id="h">00</span>
+                <span class="time-label">giờ</span>
+            </div>
+            <div class="time-box">
+                <span class="time-num" id="m">00</span>
+                <span class="time-label">phút</span>
+            </div>
+            <div class="time-box">
+                <span class="time-num" id="s">00</span>
+                <span class="time-label">giây</span>
+            </div>
+        </div>
     </div>
 
     <div class="led-wrap" id="led-board">
@@ -118,94 +118,46 @@
     </footer>
 
     <script>
-        const wishes = ["Chúc mừng năm mới!", "Vạn sự như ý!", "Tấn tài tấn lộc!", "Sức khỏe dồi dào!"];
-        
         function createEmoji(e) {
-            const icons = ['🧧','🌸','🧨','🏮','🍊','💰'];
+            const icons = ['🧧','🌸','🧨','🏮','🍊'];
             const span = document.createElement('span');
             span.className = 'emoji';
-            span.style.left = e.clientX + 'px';
-            span.style.top = e.clientY + 'px';
+            span.style.left = e.clientX + 'px'; span.style.top = e.clientY + 'px';
             span.innerText = icons[Math.floor(Math.random()*icons.length)];
             document.body.appendChild(span);
             setTimeout(() => span.remove(), 1500);
-        }
-
-        let isAuto = false, autoInt = null;
-        function toggleAuto() {
-            const btn = document.getElementById('btnAuto');
-            const box = document.getElementById('auto-wish-text');
-            if(!isAuto) {
-                isAuto = true;
-                btn.innerText = "⏳ Hệ thống đang khởi động (10s)...";
-                setTimeout(() => {
-                    if(!isAuto) return;
-                    btn.innerText = "⏸️ Tắt tự động lời chúc";
-                    autoInt = setInterval(() => {
-                        const w = wishes[Math.floor(Math.random()*wishes.length)];
-                        box.innerText = w;
-                        const msg = new SpeechSynthesisUtterance(w);
-                        msg.lang = 'vi-VN';
-                        window.speechSynthesis.speak(msg);
-                    }, 6000);
-                }, 10000);
-            } else {
-                isAuto = false;
-                clearInterval(autoInt);
-                window.speechSynthesis.cancel();
-                btn.innerText = "🖱️ Bật tự động lời chúc";
-                box.innerText = "Hệ thống tự động đã dừng.";
-            }
         }
 
         function core() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('vi-VN');
             
-            const day = now.getDate();
-            const month = now.getMonth() + 1;
-            const year = now.getFullYear();
+            const day = now.getDate(), month = now.getMonth() + 1, year = now.getFullYear();
             
-            // LOGIC MỞ CỬA: Từ Mùng 1 (17/02) đến hết Mùng 5 (21/02) năm 2026
-            // Qua ngày 22/02 (Mùng 6) sẽ tự động khóa bất kể giờ giấc.
-            const isOpen = (year === 2026 && month === 2 && day >= 17 && day <= 21);
+            // LOGIC TỰ MỞ MÙNG 1 TẾT 2027 (06/02/2027)
+            const isOpen = (year === 2027 && month === 2 && day >= 6 && day <= 10);
             
-            const contentWeb = document.getElementById('content-web');
-            const lockWeb = document.getElementById('lock-web');
-            const ledBoard = document.getElementById('led-board');
-            const mungStatus = document.getElementById('mung-status');
+            document.getElementById('content-web').style.display = isOpen ? "flex" : "none";
+            document.getElementById('lock-web').style.display = isOpen ? "none" : "flex";
+            document.getElementById('led-board').style.display = isOpen ? "flex" : "none";
 
             if (isOpen) {
-                contentWeb.style.display = "flex";
-                lockWeb.style.display = "none";
-                ledBoard.style.display = "flex";
-                
-                // Hệ thống dò mùng
-                if (day === 21) {
-                    mungStatus.innerHTML = '<span style="color:red;">⚠️ Mùng 5 (cuối cùng)</span>';
-                } else {
-                    const mungs = ["Mùng 1", "Mùng 2", "Mùng 3", "Mùng 4"];
-                    mungStatus.innerText = mungs[day - 17] + " Tết";
-                    mungStatus.style.color = "#00ff00";
-                }
+                const ms = document.getElementById('mung-status');
+                if (day === 10) ms.innerHTML = '<span style="color:red;">⚠️ Mùng 5 (cuối cùng) hãy xem lại lần cuối cùng</span>';
+                else ms.innerText = "Mùng " + (day - 5) + " Tết";
             } else {
-                contentWeb.style.display = "none";
-                lockWeb.style.display = "flex";
-                ledBoard.style.display = "none";
-                
-                // Đếm ngược đến Tết 2027 (Mùng 1 là 06/02/2027)
                 const target = new Date("Feb 06, 2027 00:00:00").getTime();
                 const diff = target - now.getTime();
-                const dd = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hh = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const mm = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const ss = Math.floor((diff % (1000 * 60)) / 1000);
-                document.getElementById('timer').innerText = `${dd}d ${hh}h ${mm}m ${ss}s`;
+                
+                if (diff > 0) {
+                    document.getElementById('d').innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                    document.getElementById('h').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                    document.getElementById('m').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                    document.getElementById('s').innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+                }
             }
         }
-
-        setInterval(core, 1000);
-        core();
+        setInterval(core, 1000); core();
         document.oncontextmenu = () => false;
     </script>
 </body>
